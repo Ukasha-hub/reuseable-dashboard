@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Topbar from "./Components/Topbar"
+import Sidebar from './Components/Sidebar'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -10,7 +11,7 @@ function App() {
   return (
     <>
 
-    <Topbar></Topbar>
+    <Sidebar></Sidebar>
       
     </>
   )

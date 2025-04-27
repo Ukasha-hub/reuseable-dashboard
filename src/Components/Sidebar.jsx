@@ -1,0 +1,58 @@
+import React from 'react';
+import Topbar from './Topbar';
+import { Link, Route, Routes } from 'react-router-dom';
+import Homepage from '../Pages/Homepage';
+import UserProfile from '../Pages/UserProfile';
+
+
+const Sidebar = () => {
+  return (
+    <div className="drawer lg:drawer-open">
+      <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+      
+      <div className="drawer-content flex flex-col">
+         {/* Page content */}
+        <Topbar />
+
+        <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/userprofile" element={<UserProfile />} />
+        </Routes>
+       
+        
+      </div>
+      
+      <div className="drawer-side">
+        {/* Remove overlay on large screens */}
+        <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay lg:hidden"></label>
+        
+        <ul className="menu bg-white dark:bg-base-100 text-base-content min-h-full w-80 p-4">
+          {/* Sidebar content here */}
+
+          <li className='pb-5'><label className="input ">
+                <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                    >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                    </g>
+                </svg>
+                <input type="search" className="grow" placeholder="Search" />
+                <kbd className="kbd kbd-sm">⌘</kbd>
+                <kbd className="kbd kbd-sm">K</kbd>
+                </label>
+            </li>
+            <li><Link to="/">Home</Link></li>
+          <li><Link to="/userprofile">User Profile</Link></li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;

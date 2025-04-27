@@ -1,16 +1,24 @@
 import DarkLightTheme from "./DarkLightTheme"
+import NotificationButton from "./NotificationButton"
 
 
 const Topbar = () => {
     
   return (
     <div>
-        <div className="navbar bg-base-100 shadow-sm">
+        <div className="navbar bg-base-100 dark:shadow-white shadow-black lg:px-5 md:px-4 shadow-sm">
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">daisyUI</a>
+            <label htmlFor="my-drawer" className="btn btn-primary drawer-button lg:hidden ">
+                    Open drawer
+            </label>
+                <a className="btn btn-ghost text-xl">Dashboard</a>
+                
             </div>
-            <div className="flex flex-row gap-1">
+            <div className="flex flex-row lg:gap-3 md:gap-2 gap-0">
                 <DarkLightTheme></DarkLightTheme>
+
+                <NotificationButton></NotificationButton>
+
                 <div className="dropdown dropdown-end">
                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                     <div className="w-10 rounded-full">
@@ -32,6 +40,7 @@ const Topbar = () => {
                     <li><a>Logout</a></li>
                 </ul>
                 </div>
+                <p className="hidden md:block lg:block">hello, mmmm</p>
             </div>
             </div>
     </div>
