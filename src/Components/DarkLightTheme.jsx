@@ -11,7 +11,7 @@ const DarkLightTheme = () => {
   }, []);
 
   const toggleTheme = (e) => {
-    const newTheme = e.target.checked ? 'synthwave' : 'light';
+    const newTheme = e.target.checked ? 'dark' : 'light';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
@@ -23,7 +23,7 @@ const DarkLightTheme = () => {
         <input 
           type="checkbox" 
           onChange={toggleTheme} 
-          checked={theme === 'synthwave'} 
+          checked={theme === 'dark'} 
           className="theme-controller"
         />
         <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

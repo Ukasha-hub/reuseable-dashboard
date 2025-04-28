@@ -6,7 +6,7 @@ const Topbar = () => {
     
   return (
     <div>
-        <div className="navbar bg-base-100 border border-gray-200  dark:shadow-white shadow-black lg:px-5 md:px-4 shadow-sm">
+        <div className="navbar bg-base-100 border border-base-300    lg:px-5 md:px-4 ">
             <div className="flex-1">
             <label htmlFor="my-drawer" className="btn btn-primary drawer-button lg:hidden ">
                     Open drawer
@@ -33,7 +33,7 @@ const Topbar = () => {
                     <li>
                     <a className="justify-between">
                         Profile
-                        <span className="badge">New</span>
+                        
                     </a>
                     </li>
                     <li className><a>Settings</a></li>

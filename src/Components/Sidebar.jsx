@@ -22,14 +22,14 @@ const Sidebar = () => {
         
       </div>
       
-      <div className="drawer-side w-20 border border-gray-200 ">
+      <div className="drawer-side  border border-base-300 ">
         {/* Remove overlay on large screens */}
         <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay lg:hidden"></label>
         
-        <ul className="menu bg-white dark:bg-base-100 text-base-content min-h-full w-80 p-4">
+        <ul className="menu  lg:bg-base-100 bg-white z-50 text-black lg:text-base-content  min-h-full w-70 p-4">
           {/* Sidebar content here */}
 
-          <li className='pb-5'><label className="input ">
+          <li className='pb-5 w-60'><label className="input lg:text-base-content text-white">
                 <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g
                     strokeLinejoin="round"

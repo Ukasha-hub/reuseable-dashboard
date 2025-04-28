@@ -9,16 +9,19 @@ import StatisticsChart from '../Components/StatisticsChart'
 
 const Homepage = () => {
   return (
-    <div className='bg-base-200'>
+    <div className='flex flex-col gap-5 bg-base-300 p-5'>
 
-        <div className='flex lg:flex-row flex-col justify-between'>
-            <Table></Table>
-            <List></List>
+        <div className='flex lg:flex-row flex-col justify-between gap-5'>
+            <Table className="flex-3"></Table>
+            <List className="flex-1"></List>
         </div>
-
-        <EcommerceMetrics></EcommerceMetrics>
+        <div className='flex lg:flex-row flex-col   justify-between'>
+          <EcommerceMetrics></EcommerceMetrics>
+          <MonthlyTarget className=""></MonthlyTarget>
+        </div>
+        
         <MonthlySalesChart></MonthlySalesChart>
-        <MonthlyTarget></MonthlyTarget>
+        
         <StatisticsChart></StatisticsChart>
         
     </div>
