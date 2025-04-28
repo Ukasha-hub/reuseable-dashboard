@@ -7,7 +7,7 @@ import UserProfile from '../Pages/UserProfile';
 
 const Sidebar = () => {
   return (
-    <div className="drawer lg:drawer-open">
+    <div className="drawer lg:drawer-open ">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       
       <div className="drawer-content flex flex-col">
@@ -22,7 +22,7 @@ const Sidebar = () => {
         
       </div>
       
-      <div className="drawer-side">
+      <div className="drawer-side w-20 border border-gray-200 ">
         {/* Remove overlay on large screens */}
         <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay lg:hidden"></label>
         

@@ -2,6 +2,10 @@
 import React from 'react'
 import Table from '../Components/Table'
 import List from '../Components/List'
+import EcommerceMetrics from '../Components/EcommerceMetrics'
+import MonthlySalesChart from '../Components/MonthlySalesChart'
+import MonthlyTarget from '../Components/MonthlyTarget'
+import StatisticsChart from '../Components/StatisticsChart'
 
 const Homepage = () => {
   return (
@@ -11,6 +15,11 @@ const Homepage = () => {
             <Table></Table>
             <List></List>
         </div>
+
+        <EcommerceMetrics></EcommerceMetrics>
+        <MonthlySalesChart></MonthlySalesChart>
+        <MonthlyTarget></MonthlyTarget>
+        <StatisticsChart></StatisticsChart>
         
     </div>
   )
