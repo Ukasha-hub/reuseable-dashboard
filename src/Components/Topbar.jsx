@@ -36,7 +36,7 @@ const Topbar = () => {
                         
                     </a>
                     </li>
-                    <li className><a>Settings</a></li>
+                    <li ><a>Settings</a></li>
                     <li><a>Logout</a></li>
                 </ul>
                 </div>

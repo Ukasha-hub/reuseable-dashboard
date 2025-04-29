@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import users from '../Data/Users';
 import { Link, useLocation } from 'react-router-dom';
 import Breadcrumb from '../Components/Breadcrumb';
@@ -6,19 +6,42 @@ import { GrDocumentCsv } from "react-icons/gr";
 
 import { FaFilePdf } from "react-icons/fa6";
 
+
+
+
 const USERS_PER_PAGE = 10;
 
 const UserSettings = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
+  const [userList, setUserList] = useState(() => {
+    const stored = localStorage.getItem('users');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : users;
+    }
+    return users;
+  });
+  
+
+  
+
+  useEffect(() => {
+    localStorage.setItem('users', JSON.stringify(userList));
+  }, [userList]);
+  console.log('Loaded users:', JSON.parse(localStorage.getItem('users')));
+
+  
+  
+
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(Boolean);
 
-  const totalPages = Math.ceil(users.length / USERS_PER_PAGE);
+  const totalPages = Math.ceil(userList.length / USERS_PER_PAGE);
 
   // Handle sorting logic
-  const sortedUsers = [...users].sort((a, b) => {
+  const sortedUsers = [...userList].sort((a, b) => {
     if (!sortConfig.key) return 0;
     const valA = a[sortConfig.key]?.toString().toLowerCase() || '';
     const valB = b[sortConfig.key]?.toString().toLowerCase() || '';
@@ -63,6 +86,8 @@ const UserSettings = () => {
 
     return pages;
   };
+
+  
 
   return (
     <div className="container p-2 mx-auto sm:p-4 dark:text-gray-800">
