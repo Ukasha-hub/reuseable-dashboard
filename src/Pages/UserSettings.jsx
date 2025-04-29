@@ -5,6 +5,7 @@ import Breadcrumb from '../Components/Breadcrumb';
 import { GrDocumentCsv } from "react-icons/gr";
 
 import { FaFilePdf } from "react-icons/fa6";
+import { downloadCSV, downloadPDF } from '../Utils/DownloadUtils';
 
 
 
@@ -14,6 +15,9 @@ const USERS_PER_PAGE = 10;
 const UserSettings = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+
+  const [searchTerm, setSearchTerm] = useState('');
+
 
   const [userList, setUserList] = useState(() => {
     const stored = localStorage.getItem('users');
@@ -32,16 +36,24 @@ const UserSettings = () => {
   }, [userList]);
   console.log('Loaded users:', JSON.parse(localStorage.getItem('users')));
 
-  
+  const filteredUsers = userList.filter(user =>
+    user.name.toLowerCase().includes(searchTerm) ||
+    user.jobTitle.toLowerCase().includes(searchTerm) ||
+    user.phone.toLowerCase().includes(searchTerm) ||
+    user.email.toLowerCase().includes(searchTerm) ||
+    user.address.toLowerCase().includes(searchTerm)
+  );
   
 
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(Boolean);
 
-  const totalPages = Math.ceil(userList.length / USERS_PER_PAGE);
+  const totalPages = Math.ceil(filteredUsers.length / USERS_PER_PAGE);
+
+  
 
   // Handle sorting logic
-  const sortedUsers = [...userList].sort((a, b) => {
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
     if (!sortConfig.key) return 0;
     const valA = a[sortConfig.key]?.toString().toLowerCase() || '';
     const valB = b[sortConfig.key]?.toString().toLowerCase() || '';
@@ -112,10 +124,31 @@ const UserSettings = () => {
         </div>
       </div>
        <div className='flex flex-row justify-between'>
-          <input type="text" placeholder="Type here" className="input" />
+                  <label className="input lg:text-base-content text-white">
+                            <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <g
+                                strokeLinejoin="round"
+                                strokeLinecap="round"
+                                strokeWidth="2.5"
+                                fill="none"
+                                stroke="currentColor"
+                                >
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                                </g>
+                            </svg>
+                            <input
+                              type="search"
+                              className="grow"
+                              placeholder="Search"
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+                            />
+                
+                </label>
           <div className='flex gap-2'>
-            <button className='btn'><GrDocumentCsv className='text-3xl'/></button>
-            <button className='btn'><FaFilePdf className='text-3xl'/></button>
+            <button className='btn' onClick={() => downloadCSV(userList)}><GrDocumentCsv className='text-3xl'/></button>
+            <button className='btn' onClick={() => downloadPDF(userList)}><FaFilePdf className='text-3xl'/></button>
           <Link to="/settings/users/form" ><button className='btn  bg-green-300 '>+</button></Link>
           </div>
        </div>
