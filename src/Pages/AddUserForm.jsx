@@ -1,54 +1,73 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const AddUserForm = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        jobTitle: '',
-        email: '',
-        phone: '',
-        address: '',
-        image: '',
-      });
-    
-      const navigate = useNavigate();
-    
-      const handleChange = (e) => {
-        setFormData(prev => ({
-          ...prev,
-          [e.target.name]: e.target.value
-        }));
-      };
-    
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        const stored = JSON.parse(localStorage.getItem('users')) || [];
-        const newUser = { id: Date.now(), ...formData };
-        stored.push(newUser);
+  const { id } = useParams(); // get user id from URL
+  console.log("Editing user ID:", id);
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    jobTitle: '',
+    email: '',
+    phone: '',
+    address: '',
+    image: '',
+  });
 
-        localStorage.setItem('users', JSON.stringify(stored));
-        console.log('Saving user:', newUser);
-console.log('Users before saving:', stored);
-        navigate('/settings/users');
-      };
+  useEffect(() => {
+    if (id) {
+      const stored = JSON.parse(localStorage.getItem('users')) || [];
+      const existingUser = stored.find(user => user.id.toString() === id);
+      if (existingUser) {
+        setFormData(existingUser);
+      }
+    }
+  }, [id]);
 
-      const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-    
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setFormData(prev => ({ ...prev, image: reader.result }));
-        };
-        reader.readAsDataURL(file); // Convert to base64
-      };
+  const handleChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData(prev => ({ ...prev, image: reader.result }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const stored = JSON.parse(localStorage.getItem('users')) || [];
+
+    if (id) {
+      // Edit mode
+      const updated = stored.map(user =>
+        user.id.toString() === id ? { ...formData, id: user.id } : user
+      );
+      localStorage.setItem('users', JSON.stringify(updated));
+    } else {
+      // Add mode
+      const newUser = { id: Date.now(), ...formData };
+      stored.push(newUser);
+      localStorage.setItem('users', JSON.stringify(stored));
+    }
+
+    navigate('/settings/users');
+  };
   return (
     <div>
         <section className="p-6 bg-base-300 dark:text-gray-900">
             <form noValidate="" action="" onSubmit={handleSubmit} className="container flex flex-col mx-auto space-y-12">
                 <fieldset className=" gap-6 p-6 rounded-md shadow-sm bg-base-100">
                     <div className="space-y-2 col-span-full lg:col-span-1 pb-5">
-                        <p className="font-medium text-lg">Add User</p>
+                        <p className="font-medium text-lg">{id ? 'Edit User' : 'Add User'}</p>
                         
                     </div>
                     <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
@@ -66,11 +85,11 @@ console.log('Users before saving:', stored);
                         </div>
                         <div className="col-span-full sm:col-span-3">
                             <label htmlFor="number" className="text-sm">Contact No.</label>
-                            <input id="number" name="phone" type="number" value={formData.phone} onChange={handleChange} placeholder="Cotact No." className="w-full rounded-md focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 border border-gray-400 p-3" />
+                            <input id="number" name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="Cotact No." className="w-full rounded-md focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 border border-gray-400 p-3" />
                         </div>
                         <div className="col-span-full">
                             <label htmlFor="address" className="text-sm">Address</label>
-                            <input id="address" name="address" type="text" value={formData.address} onChange={handleChange} placeholder="Address" className="w-full rounded-md  text-gray-50  border border-gray-400 p-3" />
+                            <input id="address" name="address" type="text" value={formData.address} onChange={handleChange} placeholder="Address" className="w-full rounded-md  dark:text-gray-50  border border-gray-400 p-3" />
                         </div>
                         {/* Image Upload */}
                         <div className='col-span-full sm:col-span-3'>

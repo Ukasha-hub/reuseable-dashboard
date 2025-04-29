@@ -20,7 +20,8 @@ const Sidebar = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/settings/users" element={<UserSettings />} />
-        <Route path="/settings/users/adduser" element={<AddUserForm />} />
+        <Route path="/settings/users/form" element={<AddUserForm />} />
+        <Route path="/settings/users/form/:id" element={<AddUserForm />} />
         </Routes>
        
         

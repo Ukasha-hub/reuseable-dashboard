@@ -116,7 +116,7 @@ const UserSettings = () => {
           <div className='flex gap-2'>
             <button className='btn'><GrDocumentCsv className='text-3xl'/></button>
             <button className='btn'><FaFilePdf className='text-3xl'/></button>
-          <Link to="/settings/users/adduser" ><button className='btn  bg-green-300 '>+</button></Link>
+          <Link to="/settings/users/form" ><button className='btn  bg-green-300 '>+</button></Link>
           </div>
        </div>
      
@@ -159,14 +159,17 @@ const UserSettings = () => {
                 <td className="px-3 py-2">{user.email}</td>
                 <td className="px-3 py-2">{user.address}</td>
                 <td className="px-3 py-2">
-                <div className="dropdown dropdown-end">
+                <div className="dropdown dropdown-end z-50">
                     <button tabIndex={0} className="btn btn-sm rounded-full">
                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
                         <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z"></path>
                     </svg>
                     </button>
                     <ul tabIndex={0} className="dropdown-content menu z-[50] p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a>Edit</a></li>
+                      {console.log(user.id)}
+                    <li><Link to={`/settings/users/form/${user.id}`}>
+                      Edit
+                    </Link></li>
                     <li><a>Delete</a></li>
                     </ul>
                 </div>
