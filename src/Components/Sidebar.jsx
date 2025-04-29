@@ -3,6 +3,8 @@ import Topbar from './Topbar';
 import { Link, Route, Routes } from 'react-router-dom';
 import Homepage from '../Pages/Homepage';
 import UserProfile from '../Pages/UserProfile';
+import UserSettings from '../Pages/UserSettings';
+import AddUserForm from '../Pages/AddUserForm';
 
 
 const Sidebar = () => {
@@ -17,6 +19,8 @@ const Sidebar = () => {
         <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/userprofile" element={<UserProfile />} />
+        <Route path="/settings/users" element={<UserSettings />} />
+        <Route path="/settings/users/adduser" element={<AddUserForm />} />
         </Routes>
        
         
@@ -48,7 +52,18 @@ const Sidebar = () => {
                 </label>
             </li>
             <li><Link to="/">Home</Link></li>
-          <li><Link to="/userprofile">User Profile</Link></li>
+          
+
+          {/* Settings Dropdown */}
+          <li>
+            <details>
+              <summary>Settings</summary>
+              <ul className="pl-4">
+                <li><Link to="/settings/users" >User Settings</Link></li>
+              </ul>
+            </details>
+          </li>
+
         </ul>
       </div>
     </div>

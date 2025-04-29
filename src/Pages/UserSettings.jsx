@@ -1,0 +1,160 @@
+import React, { useState } from 'react';
+import users from '../Data/Users';
+import { Link, useLocation } from 'react-router-dom';
+import Breadcrumb from '../Components/Breadcrumb';
+import { GrDocumentCsv } from "react-icons/gr";
+
+import { FaFilePdf } from "react-icons/fa6";
+
+const USERS_PER_PAGE = 10;
+
+const UserSettings = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter(Boolean);
+
+  const totalPages = Math.ceil(users.length / USERS_PER_PAGE);
+
+  // Handle sorting logic
+  const sortedUsers = [...users].sort((a, b) => {
+    if (!sortConfig.key) return 0;
+    const valA = a[sortConfig.key]?.toString().toLowerCase() || '';
+    const valB = b[sortConfig.key]?.toString().toLowerCase() || '';
+
+    if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
+    if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  const startIndex = (currentPage - 1) * USERS_PER_PAGE;
+  const paginatedUsers = sortedUsers.slice(startIndex, startIndex + USERS_PER_PAGE);
+
+  const changePage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const requestSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortArrow = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === 'asc' ? '↑' : '↓';
+    }
+    return '';
+  };
+
+  const generatePagination = () => {
+    const pages = [];
+
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 3) pages.push(1, 2, 3, '...', totalPages);
+      else if (currentPage >= totalPages - 2) pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
+      else pages.push(1, '...', currentPage, '...', totalPages);
+    }
+
+    return pages;
+  };
+
+  return (
+    <div className="container p-2 mx-auto sm:p-4 dark:text-gray-800">
+      <div><Breadcrumb location={location} pathnames={pathnames}></Breadcrumb></div>
+      <div className='flex flex-row justify-between'>
+        
+            <div><h2 className="mb-4 text-2xl font-semibold leading-tight">Users</h2></div>
+            
+            
+      
+        
+        <div className="join flex justify-center mt-4">
+          {generatePagination().map((page, idx) => (
+            <button
+              key={idx}
+              className={`join-item btn  btn-xs ${page === currentPage ? 'btn-active' : ''} ${page === '...' ? 'btn-disabled' : ''}`}
+              onClick={() => typeof page === 'number' && changePage(page)}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+      </div>
+       <div className='flex flex-row justify-between'>
+          <input type="text" placeholder="Type here" className="input" />
+          <div className='flex gap-2'>
+            <button className='btn'><GrDocumentCsv className='text-3xl'/></button>
+            <button className='btn'><FaFilePdf className='text-3xl'/></button>
+          <Link to="/settings/users/adduser" ><button className='btn  bg-green-300 '>+</button></Link>
+          </div>
+       </div>
+     
+
+      
+
+      <div className=" overflow-x-auto block">
+        <table className="w-full p-6 text-xs text-left whitespace-nowrap min-w-max">
+          <colgroup>
+            <col className="w-5" />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col className="w-5" />
+          </colgroup>
+          <thead>
+            <tr className="dark:bg-gray-300 border-b border-gray-300">
+              <th className="p-3 cursor-pointer" onClick={() => requestSort('id')}>Id {getSortArrow('id')}</th>
+              <th className="p-3"></th>
+              <th className="p-3 cursor-pointer" onClick={() => requestSort('name')}>Name {getSortArrow('name')}</th>
+              <th className="p-3 cursor-pointer" onClick={() => requestSort('jobTitle')}>Job title {getSortArrow('jobTitle')}</th>
+              <th className="p-3 cursor-pointer" onClick={() => requestSort('phone')}>Phone {getSortArrow('phone')}</th>
+              <th className="p-3 cursor-pointer" onClick={() => requestSort('email')}>Email {getSortArrow('email')}</th>
+              <th className="p-3 cursor-pointer" onClick={() => requestSort('address')}>Address {getSortArrow('address')}</th>
+              <th className="p-3"><span className="sr-only">Edit</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedUsers.map((user, index) => (
+              <tr key={startIndex + index} className="border-b border-gray-200 dark:border-gray-300">
+                <td className="px-3 py-2">{startIndex + index + 1}</td>
+                <td className="px-3 py-2">
+                  <img src={user.image} className="w-10 h-10 rounded-3xl" alt={user.name} />
+                </td>
+                <td className="px-3 py-2">{user.name}</td>
+                <td className="px-3 py-2">{user.jobTitle}</td>
+                <td className="px-3 py-2">{user.phone}</td>
+                <td className="px-3 py-2">{user.email}</td>
+                <td className="px-3 py-2">{user.address}</td>
+                <td className="px-3 py-2">
+                <div className="dropdown dropdown-end">
+                    <button tabIndex={0} className="btn btn-sm rounded-full">
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                        <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z"></path>
+                    </svg>
+                    </button>
+                    <ul tabIndex={0} className="dropdown-content menu z-[50] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a>Edit</a></li>
+                    <li><a>Delete</a></li>
+                    </ul>
+                </div>
+                </td>
+
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    
+    </div>
+  );
+};
+
+export default UserSettings;
