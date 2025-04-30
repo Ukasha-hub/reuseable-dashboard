@@ -5,6 +5,11 @@ import Homepage from '../Pages/Homepage';
 import UserProfile from '../Pages/UserProfile';
 import UserSettings from '../Pages/UserSettings';
 import AddUserForm from '../Pages/AddUserForm';
+import Footer from './Footer';
+
+import { FaHome } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
+import { GrUserSettings } from "react-icons/gr";
 
 
 const Sidebar = () => {
@@ -19,10 +24,13 @@ const Sidebar = () => {
         <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/userprofile" element={<UserProfile />} />
-        <Route path="/settings/users" element={<UserSettings />} />
-        <Route path="/settings/users/form" element={<AddUserForm />} />
-        <Route path="/settings/users/form/:id" element={<AddUserForm />} />
+        <Route path="/usersSettings" element={<UserSettings />} />
+        <Route path="/usersSettings/add" element={<AddUserForm />} />
+        <Route path="/usersSettings/edit/:id" element={<AddUserForm />} />
+        
         </Routes>
+
+        <Footer></Footer>
        
         
       </div>
@@ -53,15 +61,15 @@ const Sidebar = () => {
                 <kbd className="kbd kbd-sm">K</kbd>
                 </label>
             </li>
-            <li><Link to="/">Home</Link></li>
+            <li><Link to="/"><FaHome />Home</Link></li>
           
 
           {/* Settings Dropdown */}
           <li>
             <details>
-              <summary>Settings</summary>
+              <summary><IoMdSettings /> Settings</summary>
               <ul className="pl-4">
-                <li><Link to="/settings/users" >User Settings</Link></li>
+                <li><Link to="/usersSettings" ><GrUserSettings /> User Settings</Link></li>
               </ul>
             </details>
           </li>

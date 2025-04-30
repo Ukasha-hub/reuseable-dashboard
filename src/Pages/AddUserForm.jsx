@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import Breadcrumb from '../Components/Breadcrumb';
 
 const AddUserForm = () => {
   const { id } = useParams(); // get user id from URL
   console.log("Editing user ID:", id);
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter(Boolean);
   const [formData, setFormData] = useState({
     name: '',
     jobTitle: '',
@@ -59,11 +62,21 @@ const AddUserForm = () => {
       localStorage.setItem('users', JSON.stringify(stored));
     }
 
-    navigate('/settings/users');
+    navigate('/usersSettings');
   };
   return (
     <div>
+      
         <section className="p-6 bg-base-300 dark:text-gray-900">
+        <div className="flex justify-between items-center mb-4">
+            <Breadcrumb location={location} pathnames={pathnames} />
+            <button
+              className="btn btn-sm btn-outline"
+              onClick={() => navigate(-1)} // go back to previous page
+            >
+              Back
+            </button>
+          </div>
             <form noValidate="" action="" onSubmit={handleSubmit} className="container flex flex-col mx-auto space-y-12">
                 <fieldset className=" gap-6 p-6 rounded-md shadow-sm bg-base-100">
                     <div className="space-y-2 col-span-full lg:col-span-1 pb-5">

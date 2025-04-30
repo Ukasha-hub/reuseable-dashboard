@@ -45,7 +45,7 @@ const Table = () => {
         <td>
           Zemlak, Daniel and Leannon
           <br />
-          <span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
+          
         </td>
         <td>Purple</td>
         <th>
@@ -77,7 +77,7 @@ const Table = () => {
         <td>
           Carroll Group
           <br />
-          <span className="badge badge-ghost badge-sm">Tax Accountant</span>
+          
         </td>
         <td>Red</td>
         <th>
@@ -109,7 +109,7 @@ const Table = () => {
         <td>
           Rowe-Schoen
           <br />
-          <span className="badge badge-ghost badge-sm">Office Assistant I</span>
+          
         </td>
         <td>Crimson</td>
         <th>
@@ -141,7 +141,7 @@ const Table = () => {
         <td>
           Wyman-Ledner
           <br />
-          <span className="badge badge-ghost badge-sm">Community Outreach Specialist</span>
+          
         </td>
         <td>Indigo</td>
         <th>

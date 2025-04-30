@@ -10,7 +10,7 @@ import { downloadCSV, downloadPDF } from '../Utils/DownloadUtils';
 
 
 
-const USERS_PER_PAGE = 10;
+
 
 const UserSettings = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +18,7 @@ const UserSettings = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
 
-
+  const [usersPerPage, setUsersPerPage] = useState(10);
   const [userList, setUserList] = useState(() => {
     const stored = localStorage.getItem('users');
     if (stored) {
@@ -48,7 +48,7 @@ const UserSettings = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(Boolean);
 
-  const totalPages = Math.ceil(filteredUsers.length / USERS_PER_PAGE);
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   
 
@@ -63,8 +63,8 @@ const UserSettings = () => {
     return 0;
   });
 
-  const startIndex = (currentPage - 1) * USERS_PER_PAGE;
-  const paginatedUsers = sortedUsers.slice(startIndex, startIndex + USERS_PER_PAGE);
+  const startIndex = (currentPage - 1) * usersPerPage;
+  const paginatedUsers = sortedUsers.slice(startIndex, startIndex + usersPerPage);
 
   const changePage = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -102,29 +102,59 @@ const UserSettings = () => {
   
 
   return (
-    <div className="container p-2 mx-auto sm:p-4 dark:text-gray-800">
+    <div className="container  mx-auto p-4 dark:text-gray-800">
       <div><Breadcrumb location={location} pathnames={pathnames}></Breadcrumb></div>
-      <div className='flex flex-row justify-between'>
+      <div className='flex lg:flex-row flex-col mb-2  justify-between'>
         
             <div><h2 className="mb-4 text-2xl font-semibold leading-tight">Users</h2></div>
             
             
-      
-        
-        <div className="join flex justify-center mt-4">
-          {generatePagination().map((page, idx) => (
-            <button
-              key={idx}
-              className={`join-item btn  btn-xs ${page === currentPage ? 'btn-active' : ''} ${page === '...' ? 'btn-disabled' : ''}`}
-              onClick={() => typeof page === 'number' && changePage(page)}
-            >
-              {page}
-            </button>
-          ))}
+        <div className='flex flex-row  gap-1'>
+            <div className="flex items-center  gap-2">
+                      
+                      <select
+                        className="select-md border border-gray-300  "
+                        value={usersPerPage}
+                        onChange={(e) => {
+                          setUsersPerPage(Number(e.target.value));
+                          setCurrentPage(1); // reset to first page on change
+                        }}
+                      >
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={50}>50</option>
+                      </select>
+              </div> 
+            
+            <div className="join flex justify-center mt-1 lg:mt-3">
+              {generatePagination().map((page, idx) => (
+                <button
+                  key={idx}
+                  className={`join-item btn  btn-xs ${page === currentPage ? 'btn-active' : ''} ${page === '...' ? 'btn-disabled' : ''}`}
+                  onClick={() => typeof page === 'number' && changePage(page)}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
         </div>
+
+            
+         
+       
+
       </div>
-       <div className='flex flex-row justify-between'>
-                  <label className="input lg:text-base-content text-white">
+       <div className='flex lg:flex-row flex-col gap-2 justify-between'>
+                  
+              <div className='flex gap-2'>
+                        <div className="tooltip lg:z-50" data-tip="Download CSV"> <button className='btn btn-sm' onClick={() => downloadCSV(userList)}><GrDocumentCsv className='text-lg'/></button></div>
+                         <div className="tooltip lg:z-50" data-tip="Download PDF"> <button className='btn btn-sm' onClick={() => downloadPDF(userList)}><FaFilePdf className='text-lg'/></button></div>
+                       
+                      <Link to="/usersSettings/add" ><div className="tooltip lg:z-50" data-tip="Add new User"><button className='btn btn-sm  bg-green-300 text-lg'>+</button></div></Link>
+              </div>
+                  
+                  <label className="input input-sm text-base-content ">
                             <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <g
                                 strokeLinejoin="round"
@@ -146,18 +176,16 @@ const UserSettings = () => {
                             />
                 
                 </label>
-          <div className='flex gap-2'>
-            <button className='btn' onClick={() => downloadCSV(userList)}><GrDocumentCsv className='text-3xl'/></button>
-            <button className='btn' onClick={() => downloadPDF(userList)}><FaFilePdf className='text-3xl'/></button>
-          <Link to="/settings/users/form" ><button className='btn  bg-green-300 '>+</button></Link>
-          </div>
+
+                     
+          
        </div>
      
 
       
 
-      <div className=" overflow-x-auto block">
-        <table className="w-full p-6 text-xs text-left whitespace-nowrap min-w-max">
+      <div className=" w-full overflow-x-auto rounded-lg shadow-md mt-4">
+        <table className="min-w-full table-auto text-sm text-left">
           <colgroup>
             <col className="w-5" />
             <col />
@@ -184,7 +212,7 @@ const UserSettings = () => {
               <tr key={startIndex + index} className="border-b border-gray-200 dark:border-gray-300">
                 <td className="px-3 py-2">{startIndex + index + 1}</td>
                 <td className="px-3 py-2">
-                  <img src={user.image} className="w-10 h-10 rounded-3xl" alt={user.name} />
+                  <img src={user.image} className="w-10 h-10 min-w-[2.5rem] min-h-[2.5rem] rounded-full object-cover" alt={user.name} />
                 </td>
                 <td className="px-3 py-2">{user.name}</td>
                 <td className="px-3 py-2">{user.jobTitle}</td>
@@ -193,14 +221,19 @@ const UserSettings = () => {
                 <td className="px-3 py-2">{user.address}</td>
                 <td className="px-3 py-2">
                 <div className="dropdown dropdown-end z-50">
-                    <button tabIndex={0} className="btn btn-sm rounded-full">
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                        <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z"></path>
-                    </svg>
-                    </button>
+                   <div className="tooltip z-50" data-tip="Action:Edit or Delete">
+
+                      <button tabIndex={0} className="btn btn-sm rounded-full">
+                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                            <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z"></path>
+                        </svg>
+                        </button>
+
+                   </div>
+                    
                     <ul tabIndex={0} className="dropdown-content menu z-[50] p-2 shadow bg-base-100 rounded-box w-52">
                       {console.log(user.id)}
-                    <li><Link to={`/settings/users/form/${user.id}`}>
+                    <li><Link to={`/usersSettings/edit/${user.id}`}>
                       Edit
                     </Link></li>
                     <li><a>Delete</a></li>
