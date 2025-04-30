@@ -7,7 +7,10 @@ import { GrDocumentCsv } from "react-icons/gr";
 import { FaFilePdf } from "react-icons/fa6";
 import { downloadCSV, downloadPDF } from '../Utils/DownloadUtils';
 
-
+import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
+import ConfirmDeleteModal from '../Components/ConfirmDeleteModal';
+import { GrView } from "react-icons/gr";
 
 
 
@@ -19,6 +22,10 @@ const UserSettings = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const [usersPerPage, setUsersPerPage] = useState(10);
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+
   const [userList, setUserList] = useState(() => {
     const stored = localStorage.getItem('users');
     if (stored) {
@@ -98,6 +105,26 @@ const UserSettings = () => {
 
     return pages;
   };
+
+  const handleDeleteClick = (user) => {
+    setUserToDelete(user);
+    setIsModalOpen(true);
+  };
+  
+  const handleConfirmDelete = () => {
+    if (userToDelete) {
+      const updatedList = userList.filter(user => user.id !== userToDelete.id);
+      setUserList(updatedList);
+      setUserToDelete(null);
+      setIsModalOpen(false);
+    }
+  };
+  
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setUserToDelete(null);
+  };
+  
 
   
 
@@ -234,9 +261,10 @@ const UserSettings = () => {
                     <ul tabIndex={0} className="dropdown-content menu z-[50] p-2 shadow bg-base-100 rounded-box w-52">
                       {console.log(user.id)}
                     <li><Link to={`/usersSettings/edit/${user.id}`}>
-                      Edit
+                    <MdEdit /> Edit
                     </Link></li>
-                    <li><a>Delete</a></li>
+                    <li><a onClick={() => handleDeleteClick(user)}><MdDelete /> Delete</a></li>
+                    <li><Link to={`/usersSettings/view/${user.id}`}><GrView /> View</Link></li>
                     </ul>
                 </div>
                 </td>
@@ -246,6 +274,14 @@ const UserSettings = () => {
           </tbody>
         </table>
       </div>
+
+      <ConfirmDeleteModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        userName={userToDelete?.name}
+      />
+
     
     </div>
   );

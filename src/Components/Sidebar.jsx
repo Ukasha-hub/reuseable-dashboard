@@ -27,6 +27,7 @@ const Sidebar = () => {
         <Route path="/usersSettings" element={<UserSettings />} />
         <Route path="/usersSettings/add" element={<AddUserForm />} />
         <Route path="/usersSettings/edit/:id" element={<AddUserForm />} />
+        <Route path="/usersSettings/view/:id" element={<UserProfile />} />
         
         </Routes>
 
