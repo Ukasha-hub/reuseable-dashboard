@@ -19,7 +19,7 @@ const DarkLightTheme = () => {
 
   return (
     <div>
-      <label className="toggle text-base-content">
+      <label className="toggle  text-base-content">
         <input 
           type="checkbox" 
           onChange={toggleTheme} 

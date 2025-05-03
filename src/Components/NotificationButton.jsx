@@ -6,7 +6,7 @@ const NotificationButton = () => {
   return (
     <div>
          <div className="dropdown dropdown-end">
-                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                <div tabIndex={0} role="button" className="btn lg:btn-md btn-xs btn-ghost btn-circle avatar">
                     <button className="w-10 rounded-full flex justify-center">
                          <IoNotifications />
                     </button>

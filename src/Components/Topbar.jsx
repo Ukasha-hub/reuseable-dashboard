@@ -6,8 +6,8 @@ const Topbar = () => {
     
   return (
     <div className=" sticky top-0 z-60 ">
-        <div className="navbar bg-base-100 border border-base-300   lg:px-5 md:px-4 ">
-            <div className="flex-1">
+        <div className="navbar bg-base-100 border border-base-300 flex flex-row justify-between   lg:px-5 md:px-4 ">
+            <div className="flex">
             <label htmlFor="my-drawer" className="btn btn-ghost drawer-button lg:hidden">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -22,13 +22,13 @@ const Topbar = () => {
                 <a className="btn btn-ghost text-xl">Dashboard</a>
                 
             </div>
-            <div className="flex flex-row lg:gap-3 md:gap-2 gap-0">
+            <div className="flex flex-row  lg:gap-3 md:gap-2 gap-0">
                 <DarkLightTheme></DarkLightTheme>
 
                 <NotificationButton></NotificationButton>
 
                 <div className="dropdown dropdown-end">
-                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                <div tabIndex={0} role="button" className="btn lg:btn-md btn-xs btn-ghost btn-circle avatar">
                     <div className="w-10 rounded-full">
                     <img
                         alt="Tailwind CSS Navbar component"
@@ -48,7 +48,7 @@ const Topbar = () => {
                     <li><a>Logout</a></li>
                 </ul>
                 </div>
-                <p className="hidden md:block lg:block">hello, mmmm</p>
+                <p className="hidden  lg:block">hello, mmmm</p>
             </div>
             </div>
     </div>
